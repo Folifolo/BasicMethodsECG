@@ -15,13 +15,14 @@ NEW_DATASET_FOLDER = DATA_FOLDER + 'new\\'
 RAW_OLD_DATASET_PATH = OLD_DATASET_FOLDER + "data_1078.json"
 RAW_NEW_DATASET_PATH = NEW_DATASET_FOLDER + "data_2033.json"
 
-OLD_AND_NEW_PKL_PATH = DATA_FOLDER + "dataset_fixed_baseline.pkl"
+OLD_AND_NEW_PKL_PATH = DATA_FOLDER + "data_old_and_new.pkl"
 DIAGNOSIS_DICTIONARY = DATA_FOLDER + "diagnosis.json"
 
 OLD_PKL_PATH = OLD_DATASET_FOLDER + "dataset_fixed_baseline.pkl"
 
 OLD_6002_PATH = OLD_DATASET_FOLDER + "6002_norm_old.pkl"
 NEW_6002_PATH = NEW_DATASET_FOLDER + "6002_norm_new.pkl"
+OLD_NEW_6002_PATH = OLD_DATASET_FOLDER + "6002_norm_old_new.pkl"
 
 MOST_FREQ_DIAGS_NUMS_OLD = [179,
                             198,
@@ -95,14 +96,18 @@ def get_diag_dict():
         sys.exit(0)
 
 
-def load_dataset(is_old=True):
-    if is_old:
+def load_dataset(type='old'):
+    if type=='old':
         infile = open(OLD_PKL_PATH, 'rb')
         dataset = pkl.load(infile)
         infile.close()
-    else:
+    elif type=='new':
         infile = open(OLD_AND_NEW_PKL_PATH, 'rb')
         (_, dataset) = pkl.load(infile)
+        infile.close()
+    elif type=='old_new':
+        infile = open(OLD_AND_NEW_PKL_PATH, 'rb')
+        (dataset, _) = pkl.load(infile)
         infile.close()
 
     return dataset
@@ -126,5 +131,10 @@ def load_dataset_6002(type='old'):
         infile = open(NEW_6002_PATH, 'rb')
         xy = pkl.load(infile)
         infile.close()
+    elif type == 'old_new':
+        infile = open(OLD_NEW_6002_PATH, 'rb')
+        xy = pkl.load(infile)
+        infile.close()
+
 
     return xy
