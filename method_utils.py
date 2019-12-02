@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from linear_methods import FisherDiscriminantAnalysis
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from method_realisations import FisherDiscriminantAnalysis
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
 from sklearn.linear_model import LogisticRegression
 
 from utils import *
@@ -39,14 +39,12 @@ class MethodUtils(ABC):
 
         self.m = probs[mx]
 
-
     def predict(self, x):
         if len(x) == 0:
             pass
         probs = self.method.predict_proba(x)[:, 1]
 
         return (probs > self.m).astype(int)
-
 
     def predict_proba(self, x):
         return self.method.predict_proba(x)
@@ -69,20 +67,7 @@ class LogRegUtils(MethodUtils):
         super().__init__()
         self.method = LogisticRegression()
 
-
-if __name__ == "__main__":
-    from sklearn.decomposition import PCA
-    from validate import cross_validate_method
-    from dataset import load_dataset_6002, MOST_FREQ_DIAGS_NUMS_OLD
-
-    num_components = 100
-
-    xy = load_dataset_6002('old')
-    X = xy['x']
-    Y = xy['y']
-    pca = PCA(n_components=X.shape[0])
-    b = pca.fit_transform(X)
-
-    meth = LdaUtils()
-    for d in reversed(MOST_FREQ_DIAGS_NUMS_OLD):
-        cross_validate_method(meth, b[:, :num_components], Y[:, d], 1)
+class QdaUtils(MethodUtils):
+    def __init__(self):
+        super().__init__()
+        self.method = QuadraticDiscriminantAnalysis()

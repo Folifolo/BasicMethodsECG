@@ -34,6 +34,17 @@ class TreeNode(ABC):
                 self.right_child.fit(x[left], y[left])
                 self.left_child.fit(x[right], y[right])
 
+    def find_optimal_param(self, x, y):
+        self.method.find_optimal_param(x, y)
+
+        if self.is_have_childs():
+            left, right = self.divide_data(x)
+            if sum(y[left]) < self.thresh or sum(y[right]) > len(y[right]) - self.thresh:
+                self.left_child = self.right_child = None
+            else:
+                self.right_child.find_optimal_param(x[left], y[left])
+                self.left_child.find_optimal_param(x[right], y[right])
+
     def divide_data(self, x):
         probs = self.method.predict_proba(x)[:, 1]
         left = (probs <= self.method.m)

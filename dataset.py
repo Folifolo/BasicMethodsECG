@@ -8,6 +8,8 @@ import numpy as np
 LEADS_NAMES = ['i', 'ii', 'iii', 'avr', 'avl', 'avf', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6']
 DATA_FOLDER = 'data\\'
 FREQUENCY_OF_DATASET = 250
+RANDOM_STATE = 42
+SPLIT_SIZE = 0.25
 
 OLD_DATASET_FOLDER = DATA_FOLDER + 'old\\'
 NEW_DATASET_FOLDER = DATA_FOLDER + 'new\\'
